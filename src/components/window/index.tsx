@@ -11,25 +11,27 @@ const Window = (props: IProps) => {
   let clickedWidth: number;
   let clickedPos: [number, number];
 
-  const moveWindowEvent = (event: MouseEvent) => {
-    setDivPos([event.clientX + vec[0], event.clientY + vec[1]]);
-  };
+  type MouseHandlerType = (event: MouseEvent) => void;
 
   const resizeEBarHandler = (event: MouseEvent) => {
     setWidth(clickedWidth + event.clientX - clickedPos[0]);
+  };
+
+  const addWindowHandler = (handler: MouseHandlerType) => {
+    window.addEventListener("mousemove", handler);
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", handler);
+    });
   };
 
   const resizeEBar: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     clickedWidth = width;
     clickedPos = [e.clientX, e.clientY];
-    window.addEventListener("mousemove", resizeEBarHandler);
-    window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", resizeEBarHandler);
-    });
+    addWindowHandler(resizeEBarHandler);
   };
 
-  const resizeWBarHandler = (event: MouseEvent) => {
+  const resizeWBarHandler: MouseHandlerType = (event: MouseEvent) => {
     const resizeWidth: number = clickedWidth + clickedPos[0] - event.clientX;
     if (resizeWidth > 0) {
       setDivPos([event.clientX, divPos[1]]);
@@ -43,19 +45,17 @@ const Window = (props: IProps) => {
     e.preventDefault();
     clickedWidth = width;
     clickedPos = [e.clientX, e.clientY];
-    window.addEventListener("mousemove", resizeWBarHandler);
-    window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", resizeWBarHandler);
-    });
+    addWindowHandler(resizeWBarHandler);
+  };
+
+  const moveWindowHandler: MouseHandlerType = (event: MouseEvent) => {
+    setDivPos([event.clientX + vec[0], event.clientY + vec[1]]);
   };
 
   const moveWindow: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     vec = [divPos[0] - e.clientX, divPos[1] - e.clientY];
-    window.addEventListener("mousemove", moveWindowEvent);
-    window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", moveWindowEvent);
-    });
+    addWindowHandler(moveWindowHandler);
   };
 
   return (

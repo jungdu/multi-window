@@ -4,6 +4,8 @@ import styled from "styled-components";
 interface IWindowProps {
   minHeight?: number;
   minWidth?: number;
+  title?: string;
+  children?: React.ReactNode;
 }
 
 type IProps = IWindowProps;
@@ -20,10 +22,6 @@ const Window = (props: IProps) => {
   let clickedPos: [number, number];
 
   type MouseHandlerType = (event: MouseEvent) => void;
-
-  const resizeEBarHandler = (event: MouseEvent) => {
-    setWidth(clickedWidth + event.clientX - clickedPos[0]);
-  };
 
   const addWindowHandler = (handler: MouseHandlerType) => {
     window.addEventListener("mousemove", handler);
@@ -43,6 +41,13 @@ const Window = (props: IProps) => {
     const resizeHeight = clickedHeight + event.clientY - clickedPos[1];
     if (resizeHeight > minHeight) {
       setHeight(resizeHeight);
+    }
+  };
+
+  const resizeEBarHandler = (event: MouseEvent) => {
+    const resizeWidth = clickedWidth + event.clientX - clickedPos[0];
+    if (resizeWidth > minWidth) {
+      setWidth(clickedWidth + event.clientX - clickedPos[0]);
     }
   };
 
@@ -89,7 +94,15 @@ const Window = (props: IProps) => {
         height,
       }}
     >
-      <WindowTop onMouseDown={moveWindow} />
+      <WindowTop onMouseDown={moveWindow}>
+        <p className="closeBtn">
+          <i className="fas fa-window-close" />
+        </p>
+        <p className="caret-down">
+          <i className="fas fa-caret-down" />
+        </p>
+        <p className="title">{props.title ? props.title : "window"}</p>
+      </WindowTop>
       <LeftBar onMouseDown={resizeWBar} />
       <RightBar onMouseDown={resizeEBar} />
       <BottomBar onMouseDown={resizeSBar} />
@@ -109,8 +122,23 @@ const WindowContainer = styled.div`
 
 const WindowTop = styled.div`
   width: 100%;
-  height: 17px;
+  height: 20px;
   background-color: #444;
+  display: flex;
+  flex-direction: row-reverse;
+  color: #f5f5f5;
+  padding: 0 5px;
+  cursor: move;
+  p {
+    padding: 0 5px;
+  }
+  .caret-down {
+    margin-left: auto;
+    cursor: pointer;
+  }
+  .closeBtn {
+    cursor: pointer;
+  }
 `;
 
 const LeftBar = styled.div`
@@ -119,7 +147,7 @@ const LeftBar = styled.div`
   left: 0;
   top: 0;
   width: 3px;
-  background-color: black;
+  background-color: #444;
   cursor: ew-resize;
 `;
 
@@ -129,7 +157,7 @@ const RightBar = styled.div`
   top: 0;
   height: 100%;
   width: 3px;
-  background-color: black;
+  background-color: #444;
   cursor: ew-resize;
 `;
 
@@ -139,7 +167,7 @@ const BottomBar = styled.div`
   bottom: 0;
   width: 100%;
   height: 3px;
-  background-color: black;
+  background-color: #444;
   position: absolute;
   cursor: ns-resize;
 `;

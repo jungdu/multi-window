@@ -1,29 +1,36 @@
 import * as React from "react";
 import styled from "styled-components";
 
-type Props = {};
+interface IProps {}
 
-const Window = (props: Props) => {
+const Window = (props: IProps) => {
   const [divPos, setDivPos] = React.useState([10, 10]);
   const [width, setWidth] = React.useState(350);
-  const [height, setHeight] = React.useState(350);
+  const [height] = React.useState(350);
   let vec: [number, number];
+  let clickedWidth: number;
+  let clickedPos: [number, number];
 
   const moveWindowEvent = (event: MouseEvent) => {
     setDivPos([event.clientX + vec[0], event.clientY + vec[1]]);
   };
 
-  const resizeWithEvent = (event: MouseEvent) => {};
+  const resizeEBarHandler = (event: MouseEvent) => {
+    setWidth(clickedWidth + event.clientX - clickedPos[0]);
+  };
 
-  const resizeWith: React.MouseEventHandler = (e: React.MouseEvent) => {
-    console.log(e.clientX);
-    window.addEventListener("mousemove", resizeWithEvent);
+  const resizeEBar: React.MouseEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    clickedWidth = width;
+    clickedPos = [e.clientX, e.clientY];
+    window.addEventListener("mousemove", resizeEBarHandler);
     window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", resizeWithEvent);
+      window.removeEventListener("mousemove", resizeEBarHandler);
     });
   };
 
   const moveWindow: React.MouseEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
     vec = [divPos[0] - e.clientX, divPos[1] - e.clientY];
     window.addEventListener("mousemove", moveWindowEvent);
     window.addEventListener("mouseup", () => {
@@ -42,7 +49,7 @@ const Window = (props: Props) => {
     >
       <WindowTop onMouseDown={moveWindow} />
       <LeftBar />
-      <RightBar />
+      <RightBar onMouseDown={resizeEBar} />
       <BottomBar />
     </WindowContainer>
   );

@@ -37,4 +37,7 @@ const DeskContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
+  width: 0;
+  height: 100%;
+  flex-direction: column;
 `;

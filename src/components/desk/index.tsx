@@ -9,22 +9,13 @@ type Props = IDeskProps;
 const Desk = (props: Props) => {
   return (
     <DeskContainer>
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
-      <Icon />
+      <Icon fileName="first_file" />
+      <Icon fileName="second_file" />
+      <Icon fileName="second_file" />
+      <Icon
+        fileName="music"
+        img="https://s3.ap-northeast-2.amazonaws.com/gamesite.test/music.png"
+      />
       <Icon />
     </DeskContainer>
   );

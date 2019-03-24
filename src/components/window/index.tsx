@@ -1,12 +1,19 @@
 import * as React from "react";
 import styled from "styled-components";
 
-interface IProps {}
+interface IWindowProps {
+  minHeight?: number;
+  minWidth?: number;
+}
+
+type IProps = IWindowProps;
 
 const Window = (props: IProps) => {
   const [divPos, setDivPos] = React.useState([10, 10]);
   const [width, setWidth] = React.useState(350);
   const [height, setHeight] = React.useState(350);
+  const minHeight = props.minHeight ? props.minHeight : 100;
+  const minWidth = props.minWidth ? props.minWidth : 100;
   let vec: [number, number];
   let clickedWidth: number;
   let clickedHeight: number;
@@ -33,7 +40,10 @@ const Window = (props: IProps) => {
   };
 
   const resizeSBarHandler: MouseHandlerType = (event: MouseEvent) => {
-    setHeight(clickedHeight + event.clientY - clickedPos[1]);
+    const resizeHeight = clickedHeight + event.clientY - clickedPos[1];
+    if (resizeHeight > minHeight) {
+      setHeight(resizeHeight);
+    }
   };
 
   const resizeEBar: React.MouseEventHandler = (e: React.MouseEvent) => {
@@ -45,7 +55,7 @@ const Window = (props: IProps) => {
 
   const resizeWBarHandler: MouseHandlerType = (event: MouseEvent) => {
     const resizeWidth: number = clickedWidth + clickedPos[0] - event.clientX;
-    if (resizeWidth > 0) {
+    if (resizeWidth > minWidth) {
       setDivPos([event.clientX, divPos[1]]);
       setWidth(resizeWidth);
     } else {

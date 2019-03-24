@@ -1,19 +1,33 @@
-import React, { useState } from "react";
+import * as React from "react";
 import styled from "styled-components";
 
-const Window = () => {
-  const [divPos, setDivPos] = useState([10, 10]);
-  let vec;
+type Props = {};
 
-  const moveMouseEvent = event => {
+const Window = (props: Props) => {
+  const [divPos, setDivPos] = React.useState([10, 10]);
+  const [width, setWidth] = React.useState(350);
+  const [height, setHeight] = React.useState(350);
+  let vec: [number, number];
+
+  const moveWindowEvent = (event: MouseEvent) => {
     setDivPos([event.clientX + vec[0], event.clientY + vec[1]]);
   };
 
-  const onMouseDown = e => {
-    vec = [divPos[0] - e.clientX, divPos[1] - e.clientY];
-    window.addEventListener("mousemove", moveMouseEvent);
+  const resizeWithEvent = (event: MouseEvent) => {};
+
+  const resizeWith: React.MouseEventHandler = (e: React.MouseEvent) => {
+    console.log(e.clientX);
+    window.addEventListener("mousemove", resizeWithEvent);
     window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", moveMouseEvent);
+      window.removeEventListener("mousemove", resizeWithEvent);
+    });
+  };
+
+  const moveWindow: React.MouseEventHandler = (e: React.MouseEvent) => {
+    vec = [divPos[0] - e.clientX, divPos[1] - e.clientY];
+    window.addEventListener("mousemove", moveWindowEvent);
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", moveWindowEvent);
     });
   };
 
@@ -22,9 +36,11 @@ const Window = () => {
       style={{
         left: divPos[0],
         top: divPos[1],
+        width,
+        height,
       }}
     >
-      <WindowTop onMouseDown={onMouseDown} />
+      <WindowTop onMouseDown={moveWindow} />
       <LeftBar />
       <RightBar />
       <BottomBar />

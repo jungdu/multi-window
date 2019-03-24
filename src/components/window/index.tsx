@@ -107,6 +107,8 @@ const Window = (props: IProps) => {
       <LeftBar onMouseDown={resizeWBar} />
       <RightBar onMouseDown={resizeEBar} />
       <BottomBar onMouseDown={resizeSBar} />
+      <LeftBottomBar />
+      <RightBottomBar />
     </WindowContainer>
   );
 };
@@ -181,6 +183,25 @@ const BottomBar = styled.div`
   width: 100%;
   height: 3px;
   background-color: lightslategray;
-  position: absolute;
   cursor: ns-resize;
+`;
+
+const RightBottomBar = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background-color: none;
+  cursor: nw-resize;
+`;
+
+const LeftBottomBar = styled.div`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background-color: none;
+  cursor: ne-resize;
 `;

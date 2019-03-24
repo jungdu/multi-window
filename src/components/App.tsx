@@ -1,14 +1,20 @@
 import * as React from "react";
-import Window from "./window";
+import Desk from "./desk";
+import styled from "styled-components";
 
 class App extends React.Component {
   public render() {
     return (
-      <div className="App">
-        <Window />
-      </div>
+      <AppContainer className="App">
+        <Desk />
+      </AppContainer>
     );
   }
 }
 
 export default App;
+
+const AppContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;

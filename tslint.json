@@ -7,7 +7,8 @@
     "no-console": false,
     "object-literal-sort-keys": false,
     "no-empty-interface": false,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "ordered-imports": false
   },
   "jsRules": {
     "no-console": false,

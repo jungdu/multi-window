@@ -29,6 +29,26 @@ const Window = (props: IProps) => {
     });
   };
 
+  const resizeWBarHandler = (event: MouseEvent) => {
+    const resizeWidth: number = clickedWidth + clickedPos[0] - event.clientX;
+    if (resizeWidth > 0) {
+      setDivPos([event.clientX, divPos[1]]);
+      setWidth(resizeWidth);
+    } else {
+      return;
+    }
+  };
+
+  const resizeWBar: React.MouseEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    clickedWidth = width;
+    clickedPos = [e.clientX, e.clientY];
+    window.addEventListener("mousemove", resizeWBarHandler);
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", resizeWBarHandler);
+    });
+  };
+
   const moveWindow: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     vec = [divPos[0] - e.clientX, divPos[1] - e.clientY];
@@ -48,7 +68,7 @@ const Window = (props: IProps) => {
       }}
     >
       <WindowTop onMouseDown={moveWindow} />
-      <LeftBar />
+      <LeftBar onMouseDown={resizeWBar} />
       <RightBar onMouseDown={resizeEBar} />
       <BottomBar />
     </WindowContainer>

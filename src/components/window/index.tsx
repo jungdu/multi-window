@@ -103,6 +103,7 @@ const Window = (props: IProps) => {
         </p>
         <p className="title">{props.title ? props.title : "window"}</p>
       </WindowTop>
+      <WindowContent>{props.children ? props.children : "EmptyContent"}</WindowContent>
       <LeftBar onMouseDown={resizeWBar} />
       <RightBar onMouseDown={resizeEBar} />
       <BottomBar onMouseDown={resizeSBar} />
@@ -120,10 +121,16 @@ const WindowContainer = styled.div`
   overflow: hidden;
 `;
 
+const WindowContent = styled.div`
+  width: 100%;
+  height: calc(100% - 20px);
+  padding: 0 3px;
+  background-color: azure;
+`;
 const WindowTop = styled.div`
   width: 100%;
   height: 20px;
-  background-color: #444;
+  background-color: lightslategray;
   display: flex;
   flex-direction: row-reverse;
   color: #f5f5f5;
@@ -135,9 +142,15 @@ const WindowTop = styled.div`
   .caret-down {
     margin-left: auto;
     cursor: pointer;
+    &:hover {
+      color: white;
+    }
   }
   .closeBtn {
     cursor: pointer;
+    &:hover {
+      color: white;
+    }
   }
 `;
 
@@ -147,7 +160,7 @@ const LeftBar = styled.div`
   left: 0;
   top: 0;
   width: 3px;
-  background-color: #444;
+  background-color: lightslategray;
   cursor: ew-resize;
 `;
 
@@ -157,7 +170,7 @@ const RightBar = styled.div`
   top: 0;
   height: 100%;
   width: 3px;
-  background-color: #444;
+  background-color: lightslategray;
   cursor: ew-resize;
 `;
 
@@ -167,7 +180,7 @@ const BottomBar = styled.div`
   bottom: 0;
   width: 100%;
   height: 3px;
-  background-color: #444;
+  background-color: lightslategray;
   position: absolute;
   cursor: ns-resize;
 `;

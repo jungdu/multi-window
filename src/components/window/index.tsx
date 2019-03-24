@@ -6,9 +6,10 @@ interface IProps {}
 const Window = (props: IProps) => {
   const [divPos, setDivPos] = React.useState([10, 10]);
   const [width, setWidth] = React.useState(350);
-  const [height] = React.useState(350);
+  const [height, setHeight] = React.useState(350);
   let vec: [number, number];
   let clickedWidth: number;
+  let clickedHeight: number;
   let clickedPos: [number, number];
 
   type MouseHandlerType = (event: MouseEvent) => void;
@@ -22,6 +23,17 @@ const Window = (props: IProps) => {
     window.addEventListener("mouseup", () => {
       window.removeEventListener("mousemove", handler);
     });
+  };
+
+  const resizeSBar: React.MouseEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    clickedHeight = height;
+    clickedPos = [e.clientX, e.clientY];
+    addWindowHandler(resizeSBarHandler);
+  };
+
+  const resizeSBarHandler: MouseHandlerType = (event: MouseEvent) => {
+    setHeight(clickedHeight + event.clientY - clickedPos[1]);
   };
 
   const resizeEBar: React.MouseEventHandler = (e: React.MouseEvent) => {
@@ -70,7 +82,7 @@ const Window = (props: IProps) => {
       <WindowTop onMouseDown={moveWindow} />
       <LeftBar onMouseDown={resizeWBar} />
       <RightBar onMouseDown={resizeEBar} />
-      <BottomBar />
+      <BottomBar onMouseDown={resizeSBar} />
     </WindowContainer>
   );
 };

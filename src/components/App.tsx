@@ -1,11 +1,11 @@
 import * as React from "react";
-import Window from "./window";
+import Desk from "./desk";
 
 class App extends React.Component {
   public render() {
     return (
       <div className="App">
-        <Window />
+        <Desk />
       </div>
     );
   }

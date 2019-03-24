@@ -75,6 +75,24 @@ const Window = (props: IProps) => {
     addWindowHandler(resizeWBarHandler);
   };
 
+  const resizeNWBar: React.MouseEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    clickedWidth = width;
+    clickedHeight = height;
+    clickedPos = [e.clientX, e.clientY];
+    addWindowHandler(resizeEBarHandler);
+    addWindowHandler(resizeSBarHandler);
+  };
+
+  const resizeNSBar: React.MouseEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    clickedWidth = width;
+    clickedHeight = height;
+    clickedPos = [e.clientX, e.clientY];
+    addWindowHandler(resizeWBarHandler);
+    addWindowHandler(resizeSBarHandler);
+  };
+
   const moveWindowHandler: MouseHandlerType = (event: MouseEvent) => {
     setDivPos([event.clientX + vec[0], event.clientY + vec[1]]);
   };
@@ -107,8 +125,8 @@ const Window = (props: IProps) => {
       <LeftBar onMouseDown={resizeWBar} />
       <RightBar onMouseDown={resizeEBar} />
       <BottomBar onMouseDown={resizeSBar} />
-      <LeftBottomBar />
-      <RightBottomBar />
+      <LeftBottomBar onMouseDown={resizeNSBar} />
+      <RightBottomBar onMouseDown={resizeNWBar} />
     </WindowContainer>
   );
 };

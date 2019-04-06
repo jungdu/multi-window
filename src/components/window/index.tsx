@@ -5,7 +5,9 @@ interface IWindowProps {
   minHeight?: number;
   minWidth?: number;
   title?: string;
-  children?: React.ReactNode;
+  children?: React.ReactNode | string;
+  blockResize?: boolean;
+  blockMove?: boolean;
 }
 
 type IProps = IWindowProps;
@@ -32,6 +34,9 @@ const Window = (props: IProps) => {
 
   const resizeSBar: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (props.blockResize) {
+      return;
+    }
     clickedHeight = height;
     clickedPos = [e.clientX, e.clientY];
     addWindowHandler(resizeSBarHandler);
@@ -53,6 +58,9 @@ const Window = (props: IProps) => {
 
   const resizeEBar: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (props.blockResize) {
+      return;
+    }
     clickedWidth = width;
     clickedPos = [e.clientX, e.clientY];
     addWindowHandler(resizeEBarHandler);
@@ -70,6 +78,9 @@ const Window = (props: IProps) => {
 
   const resizeWBar: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (props.blockResize) {
+      return;
+    }
     clickedWidth = width;
     clickedPos = [e.clientX, e.clientY];
     addWindowHandler(resizeWBarHandler);
@@ -77,6 +88,9 @@ const Window = (props: IProps) => {
 
   const resizeNWBar: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (props.blockResize) {
+      return;
+    }
     clickedWidth = width;
     clickedHeight = height;
     clickedPos = [e.clientX, e.clientY];
@@ -86,6 +100,9 @@ const Window = (props: IProps) => {
 
   const resizeNSBar: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (props.blockResize) {
+      return;
+    }
     clickedWidth = width;
     clickedHeight = height;
     clickedPos = [e.clientX, e.clientY];
@@ -99,8 +116,24 @@ const Window = (props: IProps) => {
 
   const moveWindow: React.MouseEventHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (props.blockMove) {
+      return;
+    }
+
     vec = [divPos[0] - e.clientX, divPos[1] - e.clientY];
     addWindowHandler(moveWindowHandler);
+  };
+
+  const renderResizeBar = () => {
+    return (
+      <>
+        <LeftBar onMouseDown={resizeWBar} />
+        <RightBar onMouseDown={resizeEBar} />
+        <BottomBar onMouseDown={resizeSBar} />
+        <LeftBottomBar onMouseDown={resizeNSBar} />
+        <RightBottomBar onMouseDown={resizeNWBar} />
+      </>
+    );
   };
 
   return (
@@ -122,11 +155,7 @@ const Window = (props: IProps) => {
         <p className="title">{props.title ? props.title : "window"}</p>
       </WindowTop>
       <WindowContent>{props.children ? props.children : "EmptyContent"}</WindowContent>
-      <LeftBar onMouseDown={resizeWBar} />
-      <RightBar onMouseDown={resizeEBar} />
-      <BottomBar onMouseDown={resizeSBar} />
-      <LeftBottomBar onMouseDown={resizeNSBar} />
-      <RightBottomBar onMouseDown={resizeNWBar} />
+      {renderResizeBar()}
     </WindowContainer>
   );
 };

@@ -1,12 +1,12 @@
 import * as React from "react";
-import Desk from "./desk";
+import Window from "./window";
 import styled from "styled-components";
 
 class App extends React.Component {
   public render() {
     return (
       <AppContainer className="App">
-        <Desk />
+        <Window />
       </AppContainer>
     );
   }
